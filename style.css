@@ -1,0 +1,1840 @@
+/* =========================================================
+   1. O'zgaruvchilar
+   ========================================================= */
+
+:root {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --surface-2: #eef0f4;
+  --text: #14171f;
+  --muted: #5d6475;
+  --border: #e1e4ea;
+  --accent: #e63946;
+  --accent-dark: #c72c39;
+  --accent-soft: #fde8ea;
+  --ok: #1f9d55;
+  --dark: #10131a;
+  --radius: 14px;
+  --shadow: 0 1px 2px rgba(16, 19, 26, 0.06), 0 8px 24px rgba(16, 19, 26, 0.06);
+  --shadow-lg: 0 20px 60px rgba(16, 19, 26, 0.25);
+}
+
+
+/* =========================================================
+   2. Asosiy sozlamalar
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 80px;
+}
+
+body {
+  font-family: "Inter", system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.5;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.container {
+  width: 100%;
+  padding-inline: clamp(16px, 3vw, 48px);
+}
+
+.muted {
+  color: var(--muted);
+}
+
+.icon {
+  flex-shrink: 0;
+}
+
+
+/* =========================================================
+   3. Tugmalar
+   ========================================================= */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 11px 20px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Oddiy hover — faqat rangi to'qroq bo'ladi */
+.btn-primary:hover {
+  background: var(--accent-dark);
+}
+
+.btn-ghost {
+  background: var(--surface);
+  border-color: var(--border);
+}
+
+.btn-ghost:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.btn-sm {
+  padding: 7px 14px;
+  font-size: 14px;
+}
+
+.full {
+  width: 100%;
+}
+
+
+/* =========================================================
+   Yuklanish ekrani (mashina 0% dan 100% gacha yuradi)
+   ========================================================= */
+
+/* Yuklanayotganda sahifani aylantirib bo'lmaydi */
+body.loading {
+  overflow: hidden;
+}
+
+.loader {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  background: radial-gradient(900px 400px at 50% 40%, #232834 0%, var(--dark) 70%);
+  color: #fff;
+  transition: opacity 0.7s ease, visibility 0.7s ease, transform 0.7s ease;
+}
+
+/* 100% bo'lgach ekran silliq yo'qoladi */
+.loader.done {
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(1.04);
+}
+
+.loader-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 28px;
+  width: min(560px, 86vw);
+  animation: fade-up 0.6s ease both;
+}
+
+.loader .logo {
+  font-size: 24px;
+}
+
+.loader-road {
+  position: relative;
+  width: 100%;
+  padding-top: 84px;
+}
+
+/* Mashina: --p (0 dan 1 gacha) qiymatiga qarab chapdan o'ngga yuradi */
+/* bottom: -4px — rasm ostidagi bo'sh joy hisobiga g'ildiraklar aynan chiziqqa tegadi */
+.loader-car {
+  position: absolute;
+  bottom: -4px;
+  left: calc((100% - 170px) * var(--p, 0));
+  width: 170px;
+}
+
+.loader-car img {
+  width: 100%;
+}
+
+.loader-track {
+  height: 6px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.loader-fill {
+  width: calc(100% * var(--p, 0));
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent-dark), var(--accent));
+  box-shadow: 0 0 16px rgba(230, 57, 70, 0.6);
+}
+
+/* Yuklanayotganda hero animatsiyalari kutib turadi */
+body.loading .hero-text > *,
+body.loading .hero-visual,
+body.loading .hero-photo,
+body.loading .hero-tag {
+  animation-play-state: paused;
+}
+
+
+/* =========================================================
+   4. Header
+   ========================================================= */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: rgba(16, 19, 26, 0.92);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+.site-header.scrolled {
+  background: rgba(10, 12, 18, 0.97);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.header-inner {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  height: 66px;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 20px;
+  letter-spacing: -0.02em;
+}
+
+.logo b {
+  color: var(--accent);
+  font-weight: 800;
+}
+
+.logo-mark {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: var(--accent);
+  font-weight: 800;
+  transition: transform 0.4s cubic-bezier(0.3, 1.6, 0.5, 1);
+}
+
+.logo:hover .logo-mark {
+  transform: rotate(-12deg) scale(1.12);
+}
+
+.nav {
+  display: flex;
+  gap: 28px;
+  margin-left: auto;
+}
+
+.nav a {
+  position: relative;
+  padding: 6px 0;
+  color: #c9cdd6;
+  font-size: 15px;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+/* Havola ostidagi chiziq */
+.nav a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.25s ease;
+}
+
+.nav a:hover {
+  color: #fff;
+}
+
+.nav a:hover::after {
+  transform: scaleX(1);
+}
+
+.fav-toggle {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  transition: transform 0.2s, background 0.2s, border-color 0.2s;
+}
+
+.fav-toggle:hover {
+  border-color: var(--accent);
+  transform: scale(1.08);
+}
+
+.fav-toggle.active {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+/* Header'dagi yurakni oq qilish */
+.fav-toggle .icon {
+  filter: brightness(0) invert(1);
+}
+
+.burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  padding: 6px;
+  border: 0;
+  background: none;
+}
+
+.burger span {
+  height: 2px;
+  border-radius: 2px;
+  background: #fff;
+}
+
+
+/* =========================================================
+   5. Hero
+   ========================================================= */
+
+.hero {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: calc(100vh - 66px);
+  overflow: hidden;
+  background: radial-gradient(1200px 500px at 85% 20%, #2a2f3d 0%, var(--dark) 60%);
+  color: #fff;
+}
+
+/* Orqa fondagi qizil nur */
+.hero::before {
+  content: "";
+  position: absolute;
+  top: 10%;
+  right: -120px;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(230, 57, 70, 0.22), transparent 65%);
+  pointer-events: none;
+  animation: float 9s ease-in-out infinite;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr 1.1fr;
+  align-items: center;
+  gap: 64px;
+  padding-block: 96px 110px;
+}
+
+.hero-text > * {
+  animation: fade-up 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+.hero-text > :nth-child(2) { animation-delay: 0.15s; }
+.hero-text > :nth-child(3) { animation-delay: 0.28s; }
+.hero-text > :nth-child(4) { animation-delay: 0.4s; }
+.hero-text > :nth-child(5) { animation-delay: 0.52s; }
+
+.eyebrow {
+  margin-bottom: 14px;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.hero h1 {
+  font-size: clamp(38px, 5.4vw, 68px);
+  font-weight: 800;
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+}
+
+.lead {
+  max-width: 560px;
+  margin: 20px 0 30px;
+  color: #b8bdc9;
+  font-size: 20px;
+}
+
+.hero-search {
+  display: flex;
+  gap: 8px;
+  max-width: 560px;
+  padding: 8px;
+  border-radius: 14px;
+  background: #fff;
+}
+
+.hero-search input {
+  flex: 1;
+  min-width: 0;
+  padding: 0 12px;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--text);
+  font-size: 17px;
+}
+
+.hero-search .btn {
+  padding: 14px 26px;
+}
+.hero-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 36px;
+  list-style: none;
+}
+
+.hero-stats li {
+  padding: 12px 18px;
+  border: 1px solid transparent;
+  border-radius: 14px;
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.hero-stats li:hover {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.12);
+  transform: translateY(-3px);
+}
+
+.hero-stats strong {
+  display: block;
+  font-size: 24px;
+}
+
+.hero-stats li:hover strong {
+  color: var(--accent);
+}
+
+.hero-stats span {
+  color: #9aa0ad;
+  font-size: 14px;
+}
+
+.hero-visual {
+  animation: slide-in-right 1s cubic-bezier(0.2, 0.7, 0.2, 1) 0.2s both;
+}
+
+.hero-photo {
+  position: relative;
+  animation: float 6s ease-in-out 1.3s infinite;
+}
+
+.hero-photo img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  border-radius: 22px;
+  outline: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.55);
+  transition: transform 0.6s ease, box-shadow 0.6s ease;
+}
+
+.hero-photo:hover img {
+  transform: scale(1.02) rotate(-0.6deg);
+  box-shadow: 0 50px 100px rgba(0, 0, 0, 0.65), 0 0 0 1px rgba(230, 57, 70, 0.35);
+}
+
+.hero-tag {
+  position: absolute;
+  left: -18px;
+  bottom: 24px;
+  display: grid;
+  gap: 2px;
+  padding: 12px 18px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.92);
+  color: var(--text);
+  box-shadow: var(--shadow-lg);
+  animation: pop-in 0.6s cubic-bezier(0.3, 1.5, 0.5, 1) 1s both;
+}
+
+.hero-tag span {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.hero-tag strong {
+  font-size: 20px;
+  letter-spacing: -0.02em;
+}
+
+
+/* =========================================================
+   6. Bo'lim sarlavhalari
+   ========================================================= */
+
+.section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.section-head h2 {
+  position: relative;
+  padding-bottom: 10px;
+  font-size: 30px;
+  letter-spacing: -0.02em;
+}
+
+/* Sarlavha ostidagi qizil chiziq */
+.section-head h2::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 56px;
+  height: 4px;
+  border-radius: 4px;
+  background: var(--accent);
+}
+
+.result-count {
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.result-count b {
+  color: var(--text);
+}
+
+
+/* =========================================================
+   7. Filtrlar
+   ========================================================= */
+
+.inventory {
+  padding-block: 96px 40px;
+}
+
+.filter-bar {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr)) auto;
+  gap: 10px;
+  margin-bottom: 28px;
+}
+
+.filter-bar select {
+  width: 100%;
+  height: 44px;
+  padding: 0 30px 0 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface) url("icons/chevron-down.svg") no-repeat right 10px center / 12px;
+  font-size: 14px;
+  appearance: none;
+  cursor: pointer;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+.filter-bar select:hover {
+  border-color: #c5cad4;
+  box-shadow: 0 6px 16px rgba(16, 19, 26, 0.08);
+  transform: translateY(-2px);
+}
+
+.filter-bar select:focus {
+  outline: 2px solid var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.filter-bar .btn {
+  height: 44px;
+  padding: 0 18px;
+  white-space: nowrap;
+}
+
+
+/* =========================================================
+   8. Avtomobil kartochkalari
+   ========================================================= */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  animation: card-in 0.35s ease both;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s;
+}
+
+.card:hover {
+  border-color: transparent;
+  box-shadow: 0 22px 50px rgba(16, 19, 26, 0.14);
+  transform: translateY(-4px);
+}
+
+.card-media {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--surface-2);
+  cursor: pointer;
+}
+
+.card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.card:hover .card-img {
+  transform: scale(1.06);
+}
+
+/* Rasm ustidagi qoramtir soya */
+.card-media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.28) 0%, transparent 30%, transparent 60%, rgba(0, 0, 0, 0.55) 100%);
+  pointer-events: none;
+}
+
+/* Hover'da chiqadigan "Batafsil ko'rish" yozuvi */
+.card-media::before {
+  content: "Batafsil ko'rish →";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 2;
+  padding: 10px 18px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.95);
+  color: var(--text);
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  opacity: 0;
+  transform: translate(-50%, -30%);
+  pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.card-media:hover::before {
+  opacity: 1;
+  transform: translate(-50%, -50%);
+}
+
+.media-top,
+.media-bottom {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.media-top {
+  top: 12px;
+}
+
+.media-bottom {
+  bottom: 12px;
+  justify-content: flex-start;
+}
+
+.badge {
+  padding: 4px 11px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.95);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.badge.new {
+  background: var(--ok);
+  color: #fff;
+}
+
+.glass-tag {
+  padding: 4px 10px;
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 999px;
+  background: rgba(16, 19, 26, 0.45);
+  backdrop-filter: blur(6px);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.fav-btn {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+  transition: transform 0.15s;
+}
+
+.fav-btn:hover {
+  transform: scale(1.1);
+}
+
+.fav-btn:active {
+  transform: scale(0.85);
+}
+
+/* Saqlanmagan yurak kulrang ko'rinadi */
+.fav-btn .icon {
+  filter: grayscale(1) opacity(0.45);
+  transition: filter 0.2s;
+}
+
+.fav-btn:hover .icon,
+.fav-btn.active .icon {
+  filter: none;
+}
+
+.fav-btn.active .icon {
+  animation: heart-beat 0.5s ease;
+}
+
+.card-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 14px;
+  padding: 18px 18px 16px;
+}
+
+.card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.card-make {
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.card-title {
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.25;
+  transition: color 0.2s;
+}
+
+.card:hover .card-title {
+  color: var(--accent);
+}
+
+.year-pill {
+  flex-shrink: 0;
+  padding: 3px 10px;
+  border-radius: 8px;
+  background: var(--surface-2);
+  font-size: 13px;
+  font-weight: 700;
+  transition: background 0.2s, color 0.2s;
+}
+
+.card:hover .year-pill {
+  background: var(--text);
+  color: #fff;
+}
+
+.spec-icons {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 6px;
+  list-style: none;
+}
+
+.spec-icons li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  padding: 9px 4px;
+  border-radius: 10px;
+  background: var(--bg);
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.spec-icons li:hover {
+  background: var(--accent-soft);
+  transform: translateY(-2px);
+}
+
+.spec-icons .icon {
+  transition: transform 0.25s;
+}
+
+.spec-icons li:hover .icon {
+  transform: scale(1.2);
+}
+
+.card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: auto;
+}
+
+.price {
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.monthly {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.monthly b {
+  color: var(--text);
+}
+
+.details-btn {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 12px;
+  background: var(--text);
+  transition: background 0.2s;
+}
+
+.details-btn:hover {
+  background: var(--accent);
+}
+
+.details-btn .icon {
+  transition: transform 0.2s;
+}
+
+.details-btn:hover .icon {
+  transform: translateX(3px);
+}
+
+.compare-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  background: none;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+
+.compare-toggle:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.compare-toggle.on {
+  border-style: solid;
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.compare-toggle .icon {
+  transition: transform 0.3s;
+}
+
+.compare-toggle:hover .icon {
+  transform: rotate(-12deg);
+}
+
+.empty {
+  padding: 60px 20px;
+  border: 1px dashed var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  text-align: center;
+}
+
+.empty p {
+  margin-top: 6px;
+  color: var(--muted);
+}
+
+
+/* =========================================================
+   9. Taqqoslash
+   ========================================================= */
+
+.compare-section {
+  padding-block: 88px 40px;
+}
+
+.compare-wrap {
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+}
+
+.compare-empty {
+  padding: 32px;
+  color: var(--muted);
+  text-align: center;
+}
+
+.compare-table {
+  width: 100%;
+  min-width: 560px;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.compare-table th,
+.compare-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.compare-table tr:first-child th {
+  vertical-align: bottom;
+}
+
+.compare-table tr:not(:first-child) th {
+  width: 160px;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.compare-table tr:not(:first-child) {
+  transition: background 0.2s;
+}
+
+.compare-table tr:not(:first-child):hover {
+  background: var(--accent-soft);
+}
+
+.compare-img {
+  width: 180px;
+  aspect-ratio: 16 / 10;
+  margin-bottom: 8px;
+  object-fit: cover;
+  border-radius: 10px;
+  transition: transform 0.3s;
+}
+
+.compare-head:hover .compare-img {
+  transform: scale(1.04);
+}
+
+.remove {
+  margin-top: 6px;
+  border: 0;
+  background: none;
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+
+/* =========================================================
+   10. Nega biz
+   ========================================================= */
+
+.why {
+  margin-top: 88px;
+  padding-block: 104px;
+  background: var(--dark);
+  color: #fff;
+}
+
+.why-head {
+  margin-bottom: 40px;
+}
+
+.why-head h2 {
+  font-size: 34px;
+}
+
+.why-head p {
+  color: #9aa0ad;
+}
+
+.why-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.why-card {
+  position: relative;
+  overflow: hidden;
+  padding: 28px 24px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.03);
+  transition: transform 0.3s ease, background 0.3s, border-color 0.3s, box-shadow 0.3s;
+}
+
+/* Hover'da tepada chiqadigan qizil chiziq */
+.why-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s ease;
+}
+
+.why-card:hover {
+  border-color: rgba(230, 57, 70, 0.45);
+  background: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.45);
+  transform: translateY(-8px);
+}
+
+.why-card:hover::before {
+  transform: scaleX(1);
+}
+
+.why-icon {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 18px;
+  border-radius: 14px;
+  background: rgba(230, 57, 70, 0.15);
+  color: var(--accent);
+  font-size: 22px;
+  font-weight: 800;
+  transition: background 0.3s, color 0.3s, transform 0.4s ease;
+}
+
+.why-card:hover .why-icon {
+  background: var(--accent);
+  color: #fff;
+  transform: rotate(-8deg) scale(1.08);
+}
+
+.why-card h3 {
+  margin-bottom: 8px;
+  font-size: 18px;
+}
+
+.why-card p {
+  color: #9aa0ad;
+  font-size: 14px;
+  transition: color 0.3s;
+}
+
+.why-card:hover p {
+  color: #c9cdd6;
+}
+
+
+/* =========================================================
+   11. Aloqa
+   ========================================================= */
+
+.contact {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 56px;
+  padding-block: 104px;
+}
+
+.contact h2 {
+  margin-bottom: 8px;
+  font-size: 30px;
+  letter-spacing: -0.02em;
+}
+
+.info-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 24px;
+  list-style: none;
+}
+
+.info-list li {
+  padding: 14px 18px;
+  border: 1px solid var(--border);
+  border-left: 3px solid transparent;
+  border-radius: 14px;
+  background: var(--surface);
+  transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+.info-list li:hover {
+  border-left-color: var(--accent);
+  box-shadow: var(--shadow);
+  transform: translateX(6px);
+}
+
+.info-list b {
+  display: block;
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.contact-form {
+  display: grid;
+  gap: 14px;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+
+.contact-form:hover {
+  box-shadow: 0 24px 60px rgba(16, 19, 26, 0.12);
+  transform: translateY(-4px);
+}
+
+.field {
+  display: grid;
+  gap: 6px;
+}
+
+.field label {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.field input,
+.field select,
+.field textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  background: var(--surface);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-soft);
+}
+
+.form-status {
+  min-height: 1.5em;
+  font-size: 14px;
+}
+
+.form-status.ok {
+  color: var(--ok);
+}
+
+.form-status.err {
+  color: var(--accent);
+}
+
+
+/* =========================================================
+   12. Footer
+   ========================================================= */
+
+.site-footer {
+  background: #0b0d12;
+  color: #9aa0ad;
+  font-size: 15px;
+}
+
+.footer-top {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1.3fr 1.6fr;
+  gap: 48px;
+  padding-block: 88px 64px;
+}
+
+.footer-brand .logo {
+  margin-bottom: 18px;
+  color: #fff;
+}
+
+.footer-brand p {
+  max-width: 320px;
+  line-height: 1.7;
+}
+
+.socials {
+  display: flex;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.socials a {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
+}
+
+.socials a:hover {
+  border-color: var(--accent);
+  background: var(--accent);
+  transform: translateY(-4px);
+}
+
+.socials .icon {
+  transition: transform 0.2s;
+}
+
+.socials a:hover .icon {
+  transform: scale(1.15);
+}
+
+.footer-col h4 {
+  margin-bottom: 20px;
+  color: #fff;
+  font-size: 16px;
+}
+
+.footer-col ul {
+  display: grid;
+  gap: 12px;
+  list-style: none;
+}
+
+.footer-col a {
+  display: inline-block;
+  transition: color 0.2s, transform 0.2s;
+}
+
+.footer-col a:hover {
+  color: #fff;
+  transform: translateX(5px);
+}
+
+.footer-col:not(.footer-contact) a::before {
+  content: "›";
+  margin-right: 8px;
+  color: var(--accent);
+}
+
+.footer-news p {
+  margin-bottom: 16px;
+  line-height: 1.6;
+}
+
+.news-form {
+  display: flex;
+  gap: 8px;
+}
+
+.news-form input {
+  flex: 1;
+  min-width: 0;
+  height: 46px;
+  padding: 0 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+}
+
+.news-form input::placeholder {
+  color: #7d8392;
+}
+
+.news-form input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.news-form .btn {
+  height: 46px;
+}
+
+.news-status {
+  min-height: 1.4em;
+  margin-top: 8px;
+  font-size: 13px;
+}
+
+.news-status.ok {
+  color: #4ade80;
+}
+
+.news-status.err {
+  color: #ff7b85;
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footer-bottom-inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 16px;
+  padding-block: 26px;
+  color: #7d8392;
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   13. Batafsil oyna (modal)
+   ========================================================= */
+
+.modal {
+  width: min(880px, 100% - 32px);
+  max-height: calc(100vh - 40px);
+  margin: auto;
+  padding: 0;
+  border: 0;
+  border-radius: 18px;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-lg);
+}
+
+.modal[open] {
+  animation: modal-in 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.modal::backdrop {
+  background: rgba(10, 12, 18, 0.6);
+  backdrop-filter: blur(3px);
+}
+
+.modal-body {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+}
+
+.modal-media {
+  position: relative;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.modal-img {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.modal-media:hover .modal-img {
+  transform: scale(1.03);
+}
+
+.modal-close {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 2;
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--surface);
+  font-size: 20px;
+  line-height: 1;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s, background 0.2s, color 0.2s;
+}
+
+.modal-close:hover {
+  background: var(--accent);
+  color: #fff;
+  transform: rotate(90deg);
+}
+
+.features {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 20px 24px 24px;
+  list-style: none;
+}
+
+.features li {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--surface-2);
+  font-size: 13px;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+
+.features li:hover {
+  background: var(--accent);
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+.modal-info {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 28px;
+}
+
+.modal-info .eyebrow {
+  margin-bottom: 0;
+}
+
+.modal-info h2 {
+  font-size: 26px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+.spec-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+
+.spec-table th,
+.spec-table td {
+  padding: 8px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.spec-table th {
+  color: var(--muted);
+  font-weight: 500;
+  text-align: left;
+}
+
+.spec-table td {
+  font-weight: 600;
+  text-align: right;
+}
+
+.finance {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 14px;
+  border-radius: 12px;
+  background: var(--surface-2);
+}
+
+.term-btn {
+  padding: 6px 14px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: 13px;
+  font-weight: 600;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.term-btn:hover {
+  border-color: var(--accent);
+}
+
+.term-btn.active {
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+}
+
+.finance-result {
+  width: 100%;
+  font-size: 14px;
+}
+
+.finance-result strong {
+  color: var(--accent);
+  font-size: 22px;
+}
+
+
+/* =========================================================
+   14. Pastki tugmalar
+   ========================================================= */
+
+.compare-bar {
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 10px 10px 10px 20px;
+  border-radius: 999px;
+  background: var(--dark);
+  color: #fff;
+  font-size: 14px;
+  white-space: nowrap;
+  box-shadow: var(--shadow-lg);
+  transform: translateX(-50%);
+}
+
+.compare-bar[hidden] {
+  display: none;
+}
+
+.to-top {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 45;
+  display: grid;
+  place-items: center;
+  width: 50px;
+  height: 50px;
+  border: 0;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 12px 30px rgba(230, 57, 70, 0.4);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(20px) scale(0.8);
+  transition: opacity 0.3s, transform 0.3s, background 0.2s;
+}
+
+.to-top.show {
+  opacity: 1;
+  pointer-events: auto;
+  transform: none;
+}
+
+.to-top:hover {
+  background: var(--accent-dark);
+}
+
+.compare-bar:not([hidden]) ~ .to-top {
+  bottom: 84px;
+}
+
+
+/* =========================================================
+   15. Scroll animatsiyasi
+   ========================================================= */
+
+/* "translate" ishlatiladi — shunda hover'dagi "transform" bilan to'qnashmaydi */
+.reveal {
+  opacity: 0;
+  translate: 0 40px;
+}
+
+.reveal.visible {
+  animation: reveal-up 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0s) both;
+}
+
+
+/* =========================================================
+   16. Keyframes
+   ========================================================= */
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(28px);
+  }
+}
+
+@keyframes reveal-up {
+  from {
+    opacity: 0;
+    translate: 0 40px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(60px) scale(0.96);
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.7) translateY(10px);
+  }
+}
+
+@keyframes float {
+  50% {
+    transform: translateY(-12px);
+  }
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+}
+
+@keyframes modal-in {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.97);
+  }
+}
+
+@keyframes heart-beat {
+  40% {
+    transform: scale(1.35);
+  }
+}
+
+
+/* =========================================================
+   17. Moslashuvchanlik (responsive)
+   ========================================================= */
+
+@media (max-width: 1180px) {
+  .filter-bar {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .footer-top {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .footer-brand,
+  .footer-news {
+    grid-column: span 3;
+  }
+
+  .footer-brand p {
+    max-width: 560px;
+  }
+}
+
+@media (max-width: 960px) {
+  .hero {
+    min-height: auto;
+  }
+
+  .hero-inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+    padding-block: 64px 72px;
+  }
+
+  .lead {
+    font-size: 18px;
+  }
+
+  .hero-tag {
+    left: 12px;
+    bottom: 12px;
+  }
+
+  .filter-bar {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .why-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .contact {
+    grid-template-columns: 1fr;
+  }
+
+  .modal-body {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 720px) {
+  .nav {
+    position: absolute;
+    top: 66px;
+    left: 0;
+    right: 0;
+    display: none;
+    flex-direction: column;
+    gap: 0;
+    padding: 8px 16px 16px;
+    background: var(--dark);
+  }
+
+  .nav.open {
+    display: flex;
+  }
+
+  .nav a {
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .fav-toggle {
+    margin-left: auto;
+  }
+
+  .burger {
+    display: flex;
+  }
+
+  .hero-stats strong {
+    font-size: 20px;
+  }
+
+  .why-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .footer-top {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 36px 24px;
+    padding-block: 64px 48px;
+  }
+
+  .footer-brand,
+  .footer-news,
+  .footer-contact {
+    grid-column: 1 / -1;
+  }
+
+  .modal {
+    width: calc(100% - 20px);
+    max-height: calc(100vh - 20px);
+  }
+
+  .modal-info {
+    padding: 20px;
+  }
+
+  .compare-bar {
+    left: 16px;
+    right: 16px;
+    justify-content: space-between;
+    transform: none;
+  }
+}
+
+/* Harakatni kamaytirishni xohlaganlar uchun */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  .reveal {
+    opacity: 1;
+    translate: none;
+  }
+}
